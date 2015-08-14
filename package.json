@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/lucasalexsorensen/ggl/issues"
   },
-  "homepage": "https://github.com/lucasalexsorensen/ggl#readme"
+  "homepage": "https://github.com/lucasalexsorensen/ggl#readme",
+  "dependencies": {
+    "request": "^2.60.0"
+  }
 }
