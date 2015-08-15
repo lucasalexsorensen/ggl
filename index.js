@@ -41,7 +41,11 @@ request.get("https://google.com/search?q=" + program.term, function(error, httpR
         var markedString = "";
         markedString += "`" + (index+1) + ":` **" + $(obj).text() + "**\n";
 
-        markedString += "*http://" + $(obj).attr("href").split("/url?q=")[1].match(/([a-z0-9\-]+\.){1,2}[a-z]{2,4}/g)[0] + "*";
+        if (typeof $(obj).attr("href").split("/url?q=")[1] === "undefined"){
+          markedString += "*URL broken*";
+        }else{
+          markedString += "*[http://" + $(obj).attr("href").split("/url?q=")[1].match(/([a-z0-9\-]+\.){1,2}[a-z]{2,4}/g)[0] + "](" + $(obj).attr("href").split("/url?q=")[1] + ")*";
+        }
 
         console.log(marked(markedString));
       }else if (index === program.list){
