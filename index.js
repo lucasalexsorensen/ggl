@@ -16,12 +16,16 @@ marked.setOptions({
 program
   .version("0.0.1")
   .usage("[options] <term...>")
-  .option("-t, --term <search term>", "String to search for.")
+  .option("-t, --term <term>", "String to search for.")
   .option("-l, --list <amount>", "Amount of search results to return. Default value is 5.", 5)
   .parse(process.argv);
 
 if(!program.term){
   throw new Error("--term required!");
+}
+
+if (!(program.list <= 10) || !(program.list > 0)){
+  throw new Error("--list has to be between 1 and 10")
 }
 
 searchResults = [];
@@ -30,18 +34,18 @@ request.get("https://google.com/search?q=" + program.term, function(error, httpR
     var $ = cheerio.load(body);
     var result = {};
 
-    console.log("\n\n");
+    console.log("\n");
+    console.log(marked("# Search results:"));
     $("h3.r > a").each(function(index, obj){
       if (index < program.list){
         var markedString = "";
-        markedString += "# " + index + ": " + $(obj).text() + "\n";
+        markedString += "`" + (index+1) + ":` **" + $(obj).text() + "**\n";
 
         markedString += "*http://" + $(obj).attr("href").split("/url?q=")[1].match(/([a-z0-9\-]+\.){1,2}[a-z]{2,4}/g)[0] + "*";
 
         console.log(marked(markedString));
       }else if (index === program.list){
         // Callback
-        console.log("\n");
       }
     });
   }
